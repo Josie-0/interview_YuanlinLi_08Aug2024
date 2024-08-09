@@ -11,3 +11,8 @@
 `docker-compose build`
 
 `docker-compose up -d`
+
+### 可优化方向
+1. 输入验证： 对用户输入的数据进行严格验证
+2. 考虑异步处理耗时长的支付 
+3. 使用 OAuth 2.0 或 JWT（JSON Web Token）进行更安全的认证和授权。

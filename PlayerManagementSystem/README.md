@@ -11,3 +11,7 @@
 `docker-compose build`
 
 `docker-compose up -d`
+
+### 可优化方向
+1. 支持批量操作
+2. 加入数据库/缓存
