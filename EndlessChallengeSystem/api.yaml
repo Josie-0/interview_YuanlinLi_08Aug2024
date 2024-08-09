@@ -1,0 +1,85 @@
+#%RAML 1.0
+title: Endless Challenge System API
+version: v1
+baseUri: http://localhost:8080
+
+/mediaType: application/json
+
+/challenges:
+  post:
+    description: participate challenge, pay 20.01
+    body:
+      application/json:
+        example: |
+          {
+            "player_id": "player365",
+            "amount": 20.01
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "challenge_id": "227cfa3d-c5bc-4a14-94c2-2ebacb387952",
+                "message": "Challenge is being processed. Check back later for the result.",
+                "status": "processing"
+              }
+
+      400:
+        body:
+          application/json:
+            example:
+              error: "Invalid request"
+      429:
+        body:
+          application/json:
+            example:
+              error: "You can only participate once per minute"
+
+/challenges/results:
+  get:
+    description: get all results
+    responses:
+      200:
+        body:
+          application/json:
+              example: |
+                [{
+                      "id": "4524ce08-64f2-4a32-b7e1-b0c09b55a299",
+                      "player_id": "player365",
+                      "amount": 20.01,
+                      "won": false,
+                      "timestamp": "2024-08-09T13:49:35.603411+01:00",
+                      "status": "completed"
+                  },
+                  {
+                      "id": "5ad71291-f81e-408d-849f-0d161eb49618",
+                      "player_id": "player366",
+                      "amount": 20.01,
+                      "won": false,
+                      "timestamp": "2024-08-09T13:50:23.158556+01:00",
+                      "status": "processing"
+                  }]
+
+  /{id}:
+    description: get a result by id
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                    "id": "e5864962-caa3-4e27-a913-55799b57e21c",
+                    "player_id": "player365",
+                    "amount": 20.01,
+                    "won": false,
+                    "timestamp": "2024-08-09T13:29:48.844518+01:00",
+                    "status": "completed"
+                }
+        404:
+          body:
+            application/json:
+              example:
+                error: "Challenge not found"

@@ -1,0 +1,95 @@
+#%RAML 1.0
+title: Player Management System API
+version: v1
+baseUri: http://localhost:8080/v1
+mediaType: application/json
+
+/players:
+  get:
+    description: List all players
+    responses:
+      200:
+        description: All players
+        body:
+          application/json:
+            type: object
+
+  post:
+    description: Register a new player
+    body:
+      application/json:
+        example: |
+          {
+            "name": "Jane Doe",
+            "level": "Intermediate"
+          }
+    responses:
+      201:
+        body:
+          application/json:
+            type: object
+
+/players/{id}:
+  get:
+    description: Get player by ID
+    uriParameters:
+      id:
+        type: string
+    responses:
+      200:
+        description: Player details
+      404:
+        description: Player not found
+
+  put:
+    description: Update player by ID
+    uriParameters:
+      id:
+        type: string
+    body:
+      application/json:
+        type: object
+        example: |
+          {
+            "name": "John Smith",
+            "level": "Advanced"
+          }
+    responses:
+      200:
+        description: Player updated
+      404:
+        description: Player not found
+
+  delete:
+    description: Delete player by ID
+    uriParameters:
+      id:
+        type: string
+    responses:
+      200:
+        description: Player deleted
+      404:
+        description: Player not found
+
+/levels:
+  get:
+    description: List all levels
+    responses:
+      200:
+        description: A list of levels
+        body:
+          application/json:
+            type: object
+
+  post:
+    description: Add a new level
+    body:
+      application/json:
+        type: Level
+        example: |
+          {
+            "name": "Expert"
+          }
+    responses:
+      201:
+        description: New level created

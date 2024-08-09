@@ -1,0 +1,151 @@
+#%RAML 1.0
+title: Game Room Management API
+version: v1
+baseUri: http://localhost:8080/v1
+mediaType: application/json
+
+/rooms:
+  get:
+    description: Get all rooms.
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              [
+                {
+                  "id": "9b1e6e38-3d5e-4b2b-bda6-1f5b6a4c5e8e",
+                  "name": "Room A",
+                  "description": "Flying Chess",
+                  "Reservations": [{
+                    "id": "cb2855fb-f1fc-437a-9940-662a9837cf50",
+                    "room_id": "66f0b641-de86-4a34-aa9d-b29be1ae731a",
+                    "whole_hour_start": "2024-09-09T17:00:00Z",
+                    "player": "Charlie"
+                  }]
+                },
+                {
+                  "id": "2baf897b-9d0d-4f68-bd9e-60b1a9ed92dc",
+                  "name": "Room B",
+                  "description": "Room for 8 player.",
+                  "Reservations": []
+                }
+              ]
+  post:
+    description: Create a new room.
+    body:
+      application/json:
+        example: |
+          {
+            "name": "Room C",
+            "description": "Room C."
+          }
+    responses:
+      201:
+        body:
+          application/json:
+            example: |
+              {
+                "id": "3b1e6e38-3d5e-4b2b-bda6-1f5b6a4c5e8f"
+              }
+
+/rooms/{id}:
+  get:
+    description: Get details of a specific room by ID.
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "id": "77db2e23-e0f3-4493-9278-3a2412365cf9",
+                "name": "Room B",
+                "description": "Room B.",
+                "Reservations": []
+              }
+      404:
+        description: Room not found.
+  put:
+    description: Update a specific room by ID.
+    body:
+      application/json:
+        example: |
+          {
+            "id": "997e776b-4c0e-4a97-948b-bc4fe8525576",
+            "name": "Room C Updated",
+            "description": "An updated description of Room C.",
+            "Reservations": null
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            type: object
+      404:
+        description: Room not found.
+  delete:
+    description: Delete a specific room by ID.
+    responses:
+      204:
+        description: Room deleted successfully.
+      404:
+        description: Room not found.
+
+/reservations:
+  get:
+    description: Get a list of reservations.
+    queryParameters:
+      room_id:
+        type: string
+        description: Filter reservations by room ID.
+      date:
+        type: string
+        description: Filter reservations by date (YYYY-MM-DD format).
+      limit:
+        type: integer
+        description: Limit the number of results returned.
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              [
+                {
+                  "id": "4d2b9e1c-92a4-4f69-85b5-d009a8fcd6c8",
+                  "room_id": "9b1e6e38-3d5e-4b2b-bda6-1f5b6a4c5e8e",
+                  "whole_hour_start": "2024-09-08T15:00:00Z",
+                  "player": "Alice"
+                },
+                {
+                  "id": "6e3a0c3a-1e6d-44a2-b62a-7e6c0d4511e3",
+                  "room_id": "2baf897b-9d0d-4f68-bd9e-60b1a9ed92dc",
+                  "whole_hour_start": "2024-09-08T17:00:00Z",
+                  "player": "Bob"
+                }
+              ]
+  post:
+    description: Create a new reservation.
+    body:
+      application/json:
+        example: |
+          {
+            "room_id": "9b1e6e38-3d5e-4b2b-bda6-1f5b6a4c5e8e",
+            "whole_hour_start": "2024-09-08T15:00:00Z",
+            "player": "Charlie"
+          }
+    responses:
+      201:
+        body:
+          application/json:
+            example: |
+              {
+                "id": "7e9e68e4-05f6-4b2f-8c51-2a06d3e7a8c0"
+              }
+      400:
+        body:
+          application/json:
+            example: |
+              {
+                "error": "invalid room ID"
+              }
+        

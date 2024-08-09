@@ -1,0 +1,75 @@
+#%RAML 1.0
+title: Payment Processing API
+version: v1
+baseUri: http://localhost:8080
+
+/payments:
+  post:
+    description: Process a payment request.
+    body:
+      application/json:
+        example: |
+          {
+            "payment_method": "credit_card",
+            "amount": 100,
+            "details": {
+              "tokenized_number": "token-abcdef1234567890"
+            }
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "status": "success",
+                "transaction_id": "cc123456789"
+              }
+      400:
+        description: Bad request due to invalid input format.
+        body:
+          application/json:
+            type: PaymentResponse
+            example: |
+              {
+                "status": "failed",
+                "error_message": "Invalid request format"
+              }
+      500:
+        description: Internal server error due to payment processing failure.
+        body:
+          application/json:
+            example: |
+              {
+               "status": "failed",
+               "error_message": "Payment processing failed"
+               }
+
+/payments/{id}:
+  get:
+    description: Retrieve details of a specific payment.
+    uriParameters:
+      id:
+        type: string
+        description: The unique identifier for the payment.
+    responses:
+      200:
+        body:
+          application/json:
+            type: PaymentDetails
+            example: |
+              {
+                "payment_method": "credit_card",
+                "amount": 100,
+                "transaction_id": "cc123456789"
+              }
+      404:
+        body:
+          application/json:
+            type: PaymentResponse
+            example: |
+              {
+                "status": "failed",
+                "error_message": "Payment not found"
+              }
+
