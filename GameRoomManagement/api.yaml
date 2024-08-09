@@ -124,7 +124,8 @@ mediaType: application/json
                 }
               ]
   post:
-    description: Create a new reservation.
+    description: Create a new reservation. To simplify operations, reservation must start at the top of the hour,
+      and the duration can only be one hour.
     body:
       application/json:
         example: |
